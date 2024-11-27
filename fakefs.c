@@ -13,6 +13,7 @@
  *   and when read sends back the encrypted text 
  * honeypot creates a file in $home called 'fakelog' 
  *   and logs all reads and writes of honeypot to it
+ * sat.jpg fetches an image from noaa.gov 
  */
 
 /* basic libraries */
