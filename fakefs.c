@@ -482,7 +482,7 @@ rsat(Req *r)
 	if((time(0) - satstamp) < 20){
 		readbuf(r, satbuf, satlen);	
 		seek(logfd, 0, 2);
-		fprint(logfd, "%s - sat old data/n", ctime(time(0)));
+		fprint(logfd, "%s - sat old data\n", ctime(time(0)));
 		return(nil);
 	}
 
