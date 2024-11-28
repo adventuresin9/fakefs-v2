@@ -437,6 +437,20 @@ rsat(Req *r)
 	int n, i, clonefd, ctlfd, bodyfd, cnum;
 	char buf[32];
 
+/*
+ * Some programs do successive reads
+ * So not pound the web site, check 
+ * if current image is new enough
+ * and use old image at old length
+ */
+	if((time(0) - satstamp) < 20){
+		readbuf(r, satbuf, satlen);	
+		seek(logfd, 0, 2);
+		fprint(logfd, "%s - sat old data\n", ctime(time(0)));
+		return(nil);
+	}
+
+	
 /* check for existence of webfs */
 
 	if(access("/mnt/web/clone", AREAD))
@@ -472,20 +486,6 @@ rsat(Req *r)
 /* load the url for the image we want */
 
 	n = write(ctlfd, saturl, strlen(saturl));
-
-
-/*
- * Some programs do successive reads
- * So not pound the web site, check 
- * if current image is new enough
- * and use old image at old length
- */
-	if((time(0) - satstamp) < 20){
-		readbuf(r, satbuf, satlen);	
-		seek(logfd, 0, 2);
-		fprint(logfd, "%s - sat old data\n", ctime(time(0)));
-		return(nil);
-	}
 
 
 /* or clear the image buffer for fresh image */
